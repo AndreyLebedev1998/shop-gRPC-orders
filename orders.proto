@@ -28,8 +28,14 @@ message ProductId {
     int64 id = 1;
 }
 
-message ProductIds {
-    repeated ProductId ids = 1;
+message OrderItem {
+    int64 id = 1;
+    int64 productId = 2;
+    int64 quantity = 3;
+}
+
+message OrderItems {
+    repeated OrderItem items = 1;
 }
 
 message OrderMessage {
@@ -41,6 +47,6 @@ message OrderMessage {
 service OrderService {
     rpc ChangeOrderStatus(OrdersStatus) returns (OrderStatusResponse);
     rpc ChangeOrderStatusPaid(OrderStatusPaid) returns (OrderStatusResponse);
-    rpc GetOrderItems(OrderId) returns (ProductIds);
+    rpc GetOrderItems(OrderId) returns (OrderItems);
     rpc RemoveOrder(OrderId) returns (OrderMessage);
 }
