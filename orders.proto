@@ -20,7 +20,18 @@ message OrderStatusResponse {
     int64 id = 3;
 }
 
+message OrderId {
+    int64 id = 1;
+}
+
+message OrderMessage {
+    string message = 1;
+    bool status = 2;
+    int64 id = 3;
+}
+
 service OrderService {
     rpc ChangeOrderStatus(OrdersStatus) returns (OrderStatusResponse);
     rpc ChangeOrderStatusPaid(OrderStatusPaid) returns (OrderStatusResponse);
+    rpc RemoveOrder(OrderId) returns (OrderMessage);
 }
