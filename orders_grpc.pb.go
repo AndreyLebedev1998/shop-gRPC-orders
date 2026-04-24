@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	OrderService_ChangeOrderStatus_FullMethodName     = "/orders.OrderService/ChangeOrderStatus"
 	OrderService_ChangeOrderStatusPaid_FullMethodName = "/orders.OrderService/ChangeOrderStatusPaid"
+	OrderService_GetOrderItems_FullMethodName         = "/orders.OrderService/GetOrderItems"
 	OrderService_RemoveOrder_FullMethodName           = "/orders.OrderService/RemoveOrder"
 )
 
@@ -30,6 +31,7 @@ const (
 type OrderServiceClient interface {
 	ChangeOrderStatus(ctx context.Context, in *OrdersStatus, opts ...grpc.CallOption) (*OrderStatusResponse, error)
 	ChangeOrderStatusPaid(ctx context.Context, in *OrderStatusPaid, opts ...grpc.CallOption) (*OrderStatusResponse, error)
+	GetOrderItems(ctx context.Context, in *OrderId, opts ...grpc.CallOption) (*ProductIds, error)
 	RemoveOrder(ctx context.Context, in *OrderId, opts ...grpc.CallOption) (*OrderMessage, error)
 }
 
@@ -61,6 +63,16 @@ func (c *orderServiceClient) ChangeOrderStatusPaid(ctx context.Context, in *Orde
 	return out, nil
 }
 
+func (c *orderServiceClient) GetOrderItems(ctx context.Context, in *OrderId, opts ...grpc.CallOption) (*ProductIds, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProductIds)
+	err := c.cc.Invoke(ctx, OrderService_GetOrderItems_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *orderServiceClient) RemoveOrder(ctx context.Context, in *OrderId, opts ...grpc.CallOption) (*OrderMessage, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(OrderMessage)
@@ -77,6 +89,7 @@ func (c *orderServiceClient) RemoveOrder(ctx context.Context, in *OrderId, opts 
 type OrderServiceServer interface {
 	ChangeOrderStatus(context.Context, *OrdersStatus) (*OrderStatusResponse, error)
 	ChangeOrderStatusPaid(context.Context, *OrderStatusPaid) (*OrderStatusResponse, error)
+	GetOrderItems(context.Context, *OrderId) (*ProductIds, error)
 	RemoveOrder(context.Context, *OrderId) (*OrderMessage, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
@@ -93,6 +106,9 @@ func (UnimplementedOrderServiceServer) ChangeOrderStatus(context.Context, *Order
 }
 func (UnimplementedOrderServiceServer) ChangeOrderStatusPaid(context.Context, *OrderStatusPaid) (*OrderStatusResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ChangeOrderStatusPaid not implemented")
+}
+func (UnimplementedOrderServiceServer) GetOrderItems(context.Context, *OrderId) (*ProductIds, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetOrderItems not implemented")
 }
 func (UnimplementedOrderServiceServer) RemoveOrder(context.Context, *OrderId) (*OrderMessage, error) {
 	return nil, status.Error(codes.Unimplemented, "method RemoveOrder not implemented")
@@ -154,6 +170,24 @@ func _OrderService_ChangeOrderStatusPaid_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrderService_GetOrderItems_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OrderId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).GetOrderItems(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrderService_GetOrderItems_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).GetOrderItems(ctx, req.(*OrderId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _OrderService_RemoveOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(OrderId)
 	if err := dec(in); err != nil {
@@ -186,6 +220,10 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ChangeOrderStatusPaid",
 			Handler:    _OrderService_ChangeOrderStatusPaid_Handler,
+		},
+		{
+			MethodName: "GetOrderItems",
+			Handler:    _OrderService_GetOrderItems_Handler,
 		},
 		{
 			MethodName: "RemoveOrder",
