@@ -437,6 +437,94 @@ func (x *OrderMessage) GetId() int64 {
 	return 0
 }
 
+type UserId struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UserId) Reset() {
+	*x = UserId{}
+	mi := &file_orders_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UserId) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UserId) ProtoMessage() {}
+
+func (x *UserId) ProtoReflect() protoreflect.Message {
+	mi := &file_orders_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UserId.ProtoReflect.Descriptor instead.
+func (*UserId) Descriptor() ([]byte, []int) {
+	return file_orders_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *UserId) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type ProductIds struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProductsIds   []*ProductId           `protobuf:"bytes,1,rep,name=products_ids,json=productsIds,proto3" json:"products_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProductIds) Reset() {
+	*x = ProductIds{}
+	mi := &file_orders_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProductIds) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProductIds) ProtoMessage() {}
+
+func (x *ProductIds) ProtoReflect() protoreflect.Message {
+	mi := &file_orders_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProductIds.ProtoReflect.Descriptor instead.
+func (*ProductIds) Descriptor() ([]byte, []int) {
+	return file_orders_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ProductIds) GetProductsIds() []*ProductId {
+	if x != nil {
+		return x.ProductsIds
+	}
+	return nil
+}
+
 var File_orders_proto protoreflect.FileDescriptor
 
 const file_orders_proto_rawDesc = "" +
@@ -467,12 +555,18 @@ const file_orders_proto_rawDesc = "" +
 	"\fOrderMessage\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\bR\x06status\x12\x0e\n" +
-	"\x02id\x18\x03 \x01(\x03R\x02id2\x91\x02\n" +
+	"\x02id\x18\x03 \x01(\x03R\x02id\"!\n" +
+	"\x06UserId\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\"B\n" +
+	"\n" +
+	"ProductIds\x124\n" +
+	"\fproducts_ids\x18\x01 \x03(\v2\x11.orders.ProductIdR\vproductsIds2\xd9\x02\n" +
 	"\fOrderService\x12F\n" +
 	"\x11ChangeOrderStatus\x12\x14.orders.OrdersStatus\x1a\x1b.orders.OrderStatusResponse\x12M\n" +
 	"\x15ChangeOrderStatusPaid\x12\x17.orders.OrderStatusPaid\x1a\x1b.orders.OrderStatusResponse\x124\n" +
 	"\rGetOrderItems\x12\x0f.orders.OrderId\x1a\x12.orders.OrderItems\x124\n" +
-	"\vRemoveOrder\x12\x0f.orders.OrderId\x1a\x14.orders.OrderMessageB5Z3github.com/AndreyLebedev1998/shop-gRPC-orders/orderb\x06proto3"
+	"\vRemoveOrder\x12\x0f.orders.OrderId\x1a\x14.orders.OrderMessage\x12F\n" +
+	" GetProductsIdsFromOrdersForUsers\x12\x0e.orders.UserId\x1a\x12.orders.ProductIdsB5Z3github.com/AndreyLebedev1998/shop-gRPC-orders/orderb\x06proto3"
 
 var (
 	file_orders_proto_rawDescOnce sync.Once
@@ -486,7 +580,7 @@ func file_orders_proto_rawDescGZIP() []byte {
 	return file_orders_proto_rawDescData
 }
 
-var file_orders_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_orders_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_orders_proto_goTypes = []any{
 	(*OrdersStatus)(nil),        // 0: orders.OrdersStatus
 	(*OrderStatusPaid)(nil),     // 1: orders.OrderStatusPaid
@@ -496,22 +590,27 @@ var file_orders_proto_goTypes = []any{
 	(*OrderItem)(nil),           // 5: orders.OrderItem
 	(*OrderItems)(nil),          // 6: orders.OrderItems
 	(*OrderMessage)(nil),        // 7: orders.OrderMessage
+	(*UserId)(nil),              // 8: orders.UserId
+	(*ProductIds)(nil),          // 9: orders.ProductIds
 }
 var file_orders_proto_depIdxs = []int32{
 	5, // 0: orders.OrderItems.items:type_name -> orders.OrderItem
-	0, // 1: orders.OrderService.ChangeOrderStatus:input_type -> orders.OrdersStatus
-	1, // 2: orders.OrderService.ChangeOrderStatusPaid:input_type -> orders.OrderStatusPaid
-	3, // 3: orders.OrderService.GetOrderItems:input_type -> orders.OrderId
-	3, // 4: orders.OrderService.RemoveOrder:input_type -> orders.OrderId
-	2, // 5: orders.OrderService.ChangeOrderStatus:output_type -> orders.OrderStatusResponse
-	2, // 6: orders.OrderService.ChangeOrderStatusPaid:output_type -> orders.OrderStatusResponse
-	6, // 7: orders.OrderService.GetOrderItems:output_type -> orders.OrderItems
-	7, // 8: orders.OrderService.RemoveOrder:output_type -> orders.OrderMessage
-	5, // [5:9] is the sub-list for method output_type
-	1, // [1:5] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	4, // 1: orders.ProductIds.products_ids:type_name -> orders.ProductId
+	0, // 2: orders.OrderService.ChangeOrderStatus:input_type -> orders.OrdersStatus
+	1, // 3: orders.OrderService.ChangeOrderStatusPaid:input_type -> orders.OrderStatusPaid
+	3, // 4: orders.OrderService.GetOrderItems:input_type -> orders.OrderId
+	3, // 5: orders.OrderService.RemoveOrder:input_type -> orders.OrderId
+	8, // 6: orders.OrderService.GetProductsIdsFromOrdersForUsers:input_type -> orders.UserId
+	2, // 7: orders.OrderService.ChangeOrderStatus:output_type -> orders.OrderStatusResponse
+	2, // 8: orders.OrderService.ChangeOrderStatusPaid:output_type -> orders.OrderStatusResponse
+	6, // 9: orders.OrderService.GetOrderItems:output_type -> orders.OrderItems
+	7, // 10: orders.OrderService.RemoveOrder:output_type -> orders.OrderMessage
+	9, // 11: orders.OrderService.GetProductsIdsFromOrdersForUsers:output_type -> orders.ProductIds
+	7, // [7:12] is the sub-list for method output_type
+	2, // [2:7] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_orders_proto_init() }
@@ -525,7 +624,7 @@ func file_orders_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_orders_proto_rawDesc), len(file_orders_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
